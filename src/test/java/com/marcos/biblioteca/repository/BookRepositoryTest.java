@@ -52,5 +52,21 @@ public class BookRepositoryTest {
             inMemoryBookRepository.listBooks().add(new Book("Title", "Author", "Category", ReadingStatus.READ));
         });
     }
+    @Test
+    void shouldUpdateBookStatus(){
+        Book book = new Book("Title", "Author", "Category", ReadingStatus.READING);
+        inMemoryBookRepository.addBook(book);
+        inMemoryBookRepository.updateStatus(book, ReadingStatus.READ);
+        Assertions.assertEquals(ReadingStatus.READ, inMemoryBookRepository.listBooks().getFirst().getStatus());
+    }
+    @Test
+    void updateBookStatusWithTheSameStatus_shouldThrowException(){
+        Book book = new Book("Title", "Author", "Category", ReadingStatus.READ);
+        inMemoryBookRepository.addBook(book);
+        Assertions.assertThrows(IllegalArgumentException.class, ()->
+            inMemoryBookRepository.updateStatus(book, ReadingStatus.READ)
+        );
+
+    }
 
 }
