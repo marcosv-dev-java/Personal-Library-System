@@ -1,5 +1,7 @@
 package com.marcos.biblioteca.model;
 
+import java.util.Objects;
+
 public class Book {
     final private String title;
     final private String author;
@@ -31,5 +33,16 @@ public class Book {
 
     public void setStatus(ReadingStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Book book)) return false;
+        return Objects.equals(title, book.title) && Objects.equals(author, book.author) && Objects.equals(category, book.category) && status == book.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, author, category, status);
     }
 }
