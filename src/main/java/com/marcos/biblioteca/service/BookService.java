@@ -3,8 +3,6 @@ package com.marcos.biblioteca.service;
 import com.marcos.biblioteca.model.Book;
 import com.marcos.biblioteca.model.ReadingStatus;
 import com.marcos.biblioteca.repository.BookRepository;
-
-import java.io.IOException;
 import java.util.List;
 
 public class BookService {
@@ -15,6 +13,9 @@ public class BookService {
     }
 
     public void addBook(Book book){
+        if (bookRepository.listBooks().contains(book)){
+            throw new IllegalArgumentException("Book already exists");
+        }
         bookRepository.addBook(book);
     }
 
@@ -23,6 +24,13 @@ public class BookService {
     }
 
     public void updateStatus(Book book, ReadingStatus status) {
+        if (!bookRepository.listBooks().contains(book)){
+            throw new IllegalArgumentException("Book does not exist");
+        }
+        if (book.getStatus().equals(status)){
+            throw new IllegalArgumentException("The book already have this status!");
+        }
+
         if (book.getStatus().equals(ReadingStatus.I_WANT_TO_READ) && status.equals(ReadingStatus.READ)){
             throw new IllegalArgumentException("Can't jump from 'I_WANT_TO_READ' to 'READ'!");
         }
@@ -33,6 +41,9 @@ public class BookService {
     }
 
     public void removeBook(Book book) {
+        if (!bookRepository.listBooks().contains(book)){
+            throw new IllegalArgumentException("Book does not exist");
+        }
         bookRepository.removeBook(book);
     }
 }
