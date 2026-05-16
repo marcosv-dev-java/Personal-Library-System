@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class InMemoryBookRepository implements BookRepository {
-    private List<Book> books;
+    private final List<Book> books;
 
     public InMemoryBookRepository() {
         this.books = new ArrayList<>();
