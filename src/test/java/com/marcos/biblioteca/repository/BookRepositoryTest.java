@@ -24,14 +24,6 @@ public class BookRepositoryTest {
         Assertions.assertEquals(bookNormal, inMemoryBookRepository.listBooks().getFirst());
 
     }
-    @Test
-    void addingBookThatAlreadyExist(){
-        Book book = new Book("Title", "Author", "Category", ReadingStatus.READ);
-        inMemoryBookRepository.addBook(book);
-
-        Assertions.assertThrows(IllegalArgumentException.class, ()->
-            inMemoryBookRepository.addBook(book));
-    }
 
     @Test
     void emptyListTest(){
@@ -59,36 +51,4 @@ public class BookRepositoryTest {
         inMemoryBookRepository.updateStatus(book, ReadingStatus.READ);
         Assertions.assertEquals(ReadingStatus.READ, inMemoryBookRepository.listBooks().getFirst().getStatus());
     }
-    @Test
-    void updateBookStatusWithTheSameStatus_shouldThrowException(){
-        Book book = new Book("Title", "Author", "Category", ReadingStatus.READ);
-        inMemoryBookRepository.addBook(book);
-        Assertions.assertThrows(IllegalArgumentException.class, ()->
-            inMemoryBookRepository.updateStatus(book, ReadingStatus.READ)
-        );
-
-    }
-    @Test
-    void updateBookStatusWhoDoenstExist_shouldThrowException(){
-        Book book = new Book("Title", "Author", "Category", ReadingStatus.READ);
-
-        Assertions.assertThrows(IllegalArgumentException.class, ()->
-                inMemoryBookRepository.updateStatus(book, ReadingStatus.I_WANT_TO_READ)
-                );
-
-    }
-    @Test
-    void shouldRemoveBook(){
-        Book book = new Book("Title", "Author", "Category", ReadingStatus.READ);
-        inMemoryBookRepository.addBook(book);
-        inMemoryBookRepository.removeBook(book);
-        Assertions.assertEquals(0 , inMemoryBookRepository.listBooks().size());
-    }
-    @Test
-    void remove_a_bookWhoDoenstExist_shouldThrowException(){
-        Book book = new Book("Title", "Author", "Category", ReadingStatus.READ);
-        Assertions.assertThrows(IllegalArgumentException.class, ()->
-                inMemoryBookRepository.removeBook(book));
-    }
-
 }

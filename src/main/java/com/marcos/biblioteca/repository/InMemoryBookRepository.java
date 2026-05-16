@@ -16,9 +16,6 @@ public class InMemoryBookRepository implements BookRepository {
 
     @Override
     public void addBook(Book book) {
-        if (this.books.contains(book)) {
-            throw new IllegalArgumentException("Book already exists");
-        }
         this.books.add(book);
     }
 
@@ -29,21 +26,11 @@ public class InMemoryBookRepository implements BookRepository {
 
     @Override
     public void updateStatus(Book book, ReadingStatus status) {
-        if (!this.books.contains(book)) {
-            throw new IllegalArgumentException("Book doesn't exist!");
-        }
-        if (book.getStatus().equals(status)) {
-            throw new IllegalArgumentException("The book already have this status!");
-        }
         book.setStatus(status);
     }
 
     @Override
     public void removeBook(Book book) {
-        if (!this.books.contains(book)) {
-            throw new IllegalArgumentException("Book doesn't exist!");
-        }
         books.remove(book);
-
     }
 }

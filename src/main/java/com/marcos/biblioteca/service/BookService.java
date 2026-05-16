@@ -4,6 +4,7 @@ import com.marcos.biblioteca.model.Book;
 import com.marcos.biblioteca.model.ReadingStatus;
 import com.marcos.biblioteca.repository.BookRepository;
 
+import java.io.IOException;
 import java.util.List;
 
 public class BookService {
@@ -13,7 +14,7 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public void addBook(Book book) {
+    public void addBook(Book book){
         bookRepository.addBook(book);
     }
 
