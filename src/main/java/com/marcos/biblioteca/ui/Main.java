@@ -2,7 +2,6 @@ package com.marcos.biblioteca.ui;
 import com.marcos.biblioteca.filter.BookFilter;
 import com.marcos.biblioteca.model.Book;
 import com.marcos.biblioteca.model.ReadingStatus;
-import com.marcos.biblioteca.report.ReportGenerator;
 import com.marcos.biblioteca.repository.FileBookRepository;
 import com.marcos.biblioteca.service.BookService;
 import com.marcos.biblioteca.service.ReportService;
@@ -10,6 +9,7 @@ import com.marcos.biblioteca.storage.FileStorage;
 
 import java.io.IOException;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -18,7 +18,6 @@ public class Main {
         final FileBookRepository repository = new FileBookRepository(storage);
         final BookService SERVICE = new BookService(repository);
         final ReportService reportService = new ReportService(repository);
-        BookFilter filter;
         Menu menu = new Menu();
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter your name: ");
@@ -38,6 +37,7 @@ public class Main {
                     \033[1;35mEnter here you choice: \033[m""");
             int choice = sc.nextInt();
             sc.nextLine();
+
             if (choice == 1) {
                 System.out.print("Well done " + name + ", enter here your book title: ");
                 String bookName = sc.nextLine();
@@ -45,8 +45,8 @@ public class Main {
                 String bookAuthor = sc.nextLine();
                 System.out.print("What category is this book in?");
                 String bookCategory = sc.nextLine();
-                boolean isValidInput = false;
                 ReadingStatus status = null;
+                boolean isValidInput = false;
                 while (!isValidInput) {
                     System.out.println("""
                             So.. type
@@ -65,20 +65,48 @@ public class Main {
                         sc.nextLine();
                     }
                 }
-
                 Book book = new Book(bookName,bookAuthor,bookCategory, status);
-                System.out.println(book.toString());
-
+                SERVICE.addBook(book);
 
             }
+            else if (choice == 2) {
+                List<Book> bookList = SERVICE.listBooks();
+                for(Book book : bookList){
+                    menu.formatedBook(book);
+                }
+            } else if (choice == 3) {
+                Book bookWanted = menu.searchAndSelectBook(SERVICE, sc);
+                ReadingStatus status = null;
+                if (bookWanted != null) {
+                    System.out.println("Which status do you want to update? ");
+                    System.out.println("""
+                            1 - Read
+                            2 - Reading
+                            3 - I want to read""");
+                    int statusChoice = sc.nextInt();
+                    switch (statusChoice) {
+                        case 1 -> status = ReadingStatus.READ;
+
+                        case 2 -> status = ReadingStatus.READING;
+
+                        case 3 -> status = ReadingStatus.I_WANT_TO_READ;
+
+                        default -> throw new InputMismatchException("Incorrect choice!");
+                    }
+                    SERVICE.updateStatus(bookWanted, status);
+                }
+            }
+
+
             if (choice == 7) {
                 break;
             }
         }
+    }
 
 
 
 
-    }}
+    }
 
 
