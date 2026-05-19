@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         final FileStorage storage = new FileStorage();
         final FileBookRepository repository = new FileBookRepository(storage);
-        final BookService SERVICE = new BookService(repository);
+        final BookService service = new BookService(repository);
         final ReportService reportService = new ReportService(repository);
         Menu menu = new Menu();
         Scanner sc = new Scanner(System.in);
@@ -66,16 +66,16 @@ public class Main {
                     }
                 }
                 Book book = new Book(bookName,bookAuthor,bookCategory, status);
-                SERVICE.addBook(book);
+                service.addBook(book);
 
             }
             else if (choice == 2) {
-                List<Book> bookList = SERVICE.listBooks();
+                List<Book> bookList = service.listBooks();
                 for(Book book : bookList){
                     menu.formatedBook(book);
                 }
             } else if (choice == 3) {
-                Book bookWanted = menu.searchAndSelectBook(SERVICE, sc);
+                Book bookWanted = menu.searchAndSelectBook(service, sc);
                 ReadingStatus status = null;
                 if (bookWanted != null) {
                     System.out.println("Which status do you want to update? ");
@@ -93,7 +93,7 @@ public class Main {
 
                         default -> throw new InputMismatchException("Incorrect choice!");
                     }
-                    SERVICE.updateStatus(bookWanted, status);
+                    service.updateStatus(bookWanted, status);
                 }
             }
 
