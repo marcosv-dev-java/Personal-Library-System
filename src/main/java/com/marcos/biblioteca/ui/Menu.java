@@ -127,4 +127,32 @@ public class Menu {
         Book book = new Book(bookName,bookAuthor,bookCategory, status);
         service.addBook(book);
     }
+    public ReadingStatus selectBookStatus(Scanner sc){
+        ReadingStatus status = null;
+        boolean isValidInput = false;
+
+        try {
+            while (!isValidInput) {
+                System.out.println("""
+                        1 - Read
+                        2 - Reading
+                        3 - I want to read""");
+                int statusChoice = sc.nextInt();
+                switch (statusChoice) {
+                    case 1 -> status = ReadingStatus.READ;
+
+                    case 2 -> status = ReadingStatus.READING;
+
+                    case 3 -> status = ReadingStatus.I_WANT_TO_READ;
+
+                    default -> throw new InputMismatchException();
+                }
+            }
+    }catch (InputMismatchException e){
+            System.out.println("\033[1;31mIncorrect choice!\033[m");
+            sc.nextLine();
+
+        }
+        return status;
+    }
 }

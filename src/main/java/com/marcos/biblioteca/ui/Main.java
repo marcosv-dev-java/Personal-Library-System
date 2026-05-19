@@ -39,35 +39,7 @@ public class Main {
             sc.nextLine();
 
             if (choice == 1) {
-                System.out.print("Well done " + name + ", enter here your book title: ");
-                String bookName = sc.nextLine();
-                System.out.print(bookName + " ok, so who is the author of this book?");
-                String bookAuthor = sc.nextLine();
-                System.out.print("What category is this book in?");
-                String bookCategory = sc.nextLine();
-                ReadingStatus status = null;
-                boolean isValidInput = false;
-                while (!isValidInput) {
-                    System.out.println("""
-                            So.. type
-                            1 if you already read this book
-                            2 if you want to read
-                            3 if you are reading""");
-                    try {
-                        choice = sc.nextInt();
-                        if (choice == 1) status = ReadingStatus.READ;
-                        else if (choice == 2) status = ReadingStatus.I_WANT_TO_READ;
-                        else if (choice == 3) status = ReadingStatus.READING;
-                        else throw new InputMismatchException();
-                        isValidInput = true;
-                    } catch (InputMismatchException e) {
-                        System.out.println("\033[1;31mMann, just type a number!\033[m");
-                        sc.nextLine();
-                    }
-                }
-                Book book = new Book(bookName,bookAuthor,bookCategory, status);
-                service.addBook(book);
-
+                menu.registerBook(sc,name,service);
             }
             else if (choice == 2) {
                 List<Book> bookList = service.listBooks();
