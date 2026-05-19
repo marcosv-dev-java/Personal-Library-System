@@ -11,7 +11,6 @@ import java.util.Map;
 
 public class ReportService{
     private final BookRepository repository;
-    private ReportGenerator report;
 
     public ReportService(BookRepository repository) {
         this.repository = repository;
